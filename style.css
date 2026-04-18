@@ -1,7 +1,5 @@
 :root {
-    --glass-bg: rgba(15, 15, 20, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --text-glow: rgba(255, 255, 255, 0.8);
+    --bg-dark: #020205;
 }
 
 * {
@@ -12,12 +10,12 @@
 }
 
 body {
-    background-color: #000;
-    overflow: hidden; /* نمنع السكرول حتى نركز عالـ 3D */
-    color: white;
+    background-color: var(--bg-dark);
+    color: #fff;
+    overflow: hidden; /* إجبار المستخدم على التفاعل مع الـ 3D */
 }
 
-#webgl-canvas {
+#gl-canvas {
     position: fixed;
     top: 0;
     left: 0;
@@ -26,51 +24,52 @@ body {
     z-index: 0;
 }
 
-#ui-layer {
+.ui-container {
     position: relative;
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 20px;
-    pointer-events: none; /* عشان نقدر نلمس الخلفية الـ 3D */
+    pointer-events: none; /* السماح بلمس الخلفية */
 }
 
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 5vh;
     pointer-events: auto;
 }
 
-.glitch {
+.glitch-text {
     font-size: 3.5rem;
     font-weight: 900;
-    text-shadow: 0 0 20px var(--text-glow);
+    text-shadow: 0 0 25px rgba(0, 242, 234, 0.6);
     letter-spacing: 2px;
 }
 
-.cyber-text {
+.cyber-tag {
     color: #00f2ea;
-    letter-spacing: 5px;
+    letter-spacing: 6px;
     font-size: 0.9rem;
     margin-top: 5px;
+    text-transform: uppercase;
 }
 
 .glass-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 20px;
     width: 100%;
     max-width: 800px;
     pointer-events: auto;
-    perspective: 1000px;
+    perspective: 1500px; /* لعمق البطاقات */
 }
 
-.glass-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+.card {
+    background: rgba(10, 10, 15, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     padding: 25px 10px;
     display: flex;
@@ -78,40 +77,49 @@ header {
     align-items: center;
     text-decoration: none;
     color: white;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.1),
+        0 15px 35px rgba(0, 0, 0, 0.8);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
     transform-style: preserve-3d;
 }
 
-.glass-card i {
+.card i {
     font-size: 2.5rem;
-    margin-bottom: 12px;
-    color: var(--brand);
-    filter: drop-shadow(0 0 15px var(--brand));
-    transition: transform 0.3s ease;
+    margin-bottom: 15px;
+    color: var(--glow);
+    filter: drop-shadow(0 0 10px var(--glow));
+    transform: translateZ(30px); /* أيقونة تطفو */
 }
 
-.glass-card span {
+.card span {
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 1px;
+    transform: translateZ(15px);
 }
 
-.glass-card:hover {
-    transform: translateY(-10px) scale(1.05);
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--brand);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px var(--brand);
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        0 0 30px var(--glow),
+        0 20px 40px rgba(0, 0, 0, 0.9);
 }
 
-.glass-card:hover i {
-    transform: translateZ(30px) scale(1.2);
+footer {
+    margin-top: auto;
+    padding-top: 40px;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    pointer-events: auto;
 }
 
-/* للموبايل */
+.rights { color: #00f2ea; font-weight: bold; }
+
 @media (max-width: 768px) {
-    .glass-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-    .glitch { font-size: 2.5rem; }
+    .glass-grid { grid-template-columns: repeat(2, 1fr); max-width: 350px; gap: 15px; }
+    .glitch-text { font-size: 2.5rem; }
 }
