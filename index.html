@@ -2,18 +2,24 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وائل | Wano - THE 3D EXPERIENCE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select: none;">
+    <title>وائل | Wano - HYPER-REALITY SIMULATION</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* --- الأساسيات والواقعية البصرية --- */
+        /* --- الأساسيات: محاكاة الفضاء العميق --- */
         :root {
             --bg-deep: #000000;
-            --primary-glow: rgba(0, 242, 234, 0.4);
-            --card-base: rgba(10, 10, 10, 0.4);
             --text-main: #ffffff;
-            --text-sub: #b0b0b0;
+            --text-sub: #a0a0a0;
+            /* ألوان التوهج الخاصة بالبطاقات (PBR Glow) */
+            --glow-yt: rgba(255, 0, 0, 0.25);
+            --glow-dc: rgba(88, 101, 242, 0.25);
+            --glow-ig: rgba(225, 48, 108, 0.25);
+            --glow-sc: rgba(255, 252, 0, 0.15);
+            --glow-tk: rgba(0, 242, 234, 0.25);
+            --glow-gh: rgba(255, 255, 255, 0.15);
+            --glow-wa: rgba(37, 211, 102, 0.25);
         }
 
         body, html {
@@ -21,14 +27,16 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* لمنع السكرول العادي وتشجيع التفاعل */
+            overflow: hidden; /* لمنع السكرول العادي وتفعيل التفاعل الفيزيائي */
             background-color: var(--bg-deep);
             color: var(--text-main);
             font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
-            user-select: none; /* لمنع تحديد النص وتعزيز الشعور بالتطبيق */
+            user-select: none;
+            -webkit-touch-callout: none;
+            touch-action: none; /* تفعيل التعامل المباشر مع اللمس للفيزياء */
         }
 
-        /* --- شاشة تحميل واقعية --- */
+        /* --- شاشة تحميل واقعية (Simulating Neural Link) --- */
         #loader {
             position: fixed;
             inset: 0;
@@ -40,14 +48,24 @@
             z-index: 10000;
             transition: opacity 1s ease-out;
         }
-        #loader h1 {
-            font-size: 2rem;
-            letter-spacing: 5px;
-            animation: pulse 2s infinite;
+        #loader .core {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            border-top-color: #00f2ea;
+            animation: spin 1s linear infinite, glowPulse 2s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        #loader h1 {
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 10px #00f2ea; } 50% { box-shadow: 0 0 30px #00f2ea; } }
 
-        /* --- كانفاس الـ 3D (الخلفية المتفاعلة) --- */
+        /* --- كانفاس الـ 3D والفيزياء --- */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -57,83 +75,105 @@
             z-index: -1;
         }
 
-        /* --- المحتوى الأمامي (المسبح في الفضاء) --- */
+        /* --- تراكب تشوه الضوء (Lens Aberration Effect) --- */
+        #aberration-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background: radial-gradient(circle at center, transparent 60%, rgba(0, 242, 234, 0.03) 90%, rgba(255, 0, 0, 0.03) 100%);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* --- المحتوى الأمامي (المسبح) --- */
         main.container {
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            perspective: 2000px; /* للعمق الثلاثي الأبعاد */
+            justify-content: space-between; /* توزيع احترافي */
+            height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
             z-index: 10;
+            perspective: 2000px; /* للعمق الثلاثي الأبعاد */
         }
 
         header {
             text-align: center;
-            margin-bottom: 6vh;
-            transform: translateZ(50px); /* يطفو أمام البطاقات */
+            transform: translateZ(100px); /* يطفو بقوة */
         }
 
         .glitch-title {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 800;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
             margin: 0;
+            letter-spacing: -1px;
         }
 
         .username {
             color: var(--text-sub);
-            letter-spacing: 3px;
-            font-size: 1rem;
-            margin-top: -5px;
+            letter-spacing: 5px;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            text-transform: uppercase;
         }
 
-        /* --- شبكة البطاقات 3D --- */
+        /* --- شبكة البطاقات (متجاوبة تماماً) --- */
         .links-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* عمودين لواقعية أفضل على الموبايل والكمبيوتر */
-            gap: 25px;
+            gap: 20px;
             width: 100%;
-            max-width: 600px;
-            transform-style: preserve-3d; /* للسماح للبطاقات بالميلان */
+            max-width: 900px;
+            transform-style: preserve-3d;
+            margin: auto 0; /* توسيط عمودي */
         }
 
+        /* الموبايل (عمودين بشكل افتراضي) */
+        @media (max-width: 767px) {
+            .links-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                max-width: 350px;
+            }
+            .glitch-title { font-size: 2.2rem; }
+            .username { font-size: 0.8rem; letter-spacing: 3px; }
+        }
+
+        /* البيسي (4 أعمدة لواقعية أفضل) */
         @media (min-width: 768px) {
-            .links-grid { grid-template-columns: repeat(3, 1fr); max-width: 800px; }
+            .links-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
-        /* --- بطاقة Glassmorphism متفاعلة تماماً --- */
+        /* --- بطاقة Glassmorphism بفيزياء احترافية (PBR) --- */
         .card {
-            background: var(--card-base);
-            border: 1px solid rgba(255, 255, 255, 0.03); /* حافة رفيعة جداً */
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.02);
             border-radius: 24px;
-            padding: 30px 20px;
+            padding: 25px 15px;
             text-decoration: none;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: transform 0.1s ease, box-shadow 0.1s ease; /* سرعة استجابة للمس */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            transition: transform 0.1s ease, box-shadow 0.1s ease; /* استجابة فورية للمس */
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
             
-            /* تأثير اللمعان الحقيقي على الحافة (Realistic Edge Highlight) */
+            /* تأثير حافة الزجاج المصقول (Fresnel Edge Highlight) */
             box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.1),
-                0 10px 20px rgba(0, 0, 0, 0.5);
+                inset 0 1px 1px rgba(255, 255, 255, 0.08),
+                0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
-        /* تأثير الـ Hover على الكمبيوتر، واللمس على الموبايل */
-        .card:hover, .card:active {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* هذا الجزء مهم: الضوء الذي يتبع الماوس يتم تحريكه عبر JS داخل هذه العناصر */
+        /* تأثير ضوء الخلفية (Glow) الذي يتبع الحركة */
         .card-glow {
             position: absolute;
             inset: 0;
@@ -144,34 +184,44 @@
             z-index: -1;
         }
 
-        .card:hover .card-glow {
+        .card:hover, .card:active {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .card:hover .card-glow, .card:active .card-glow {
             opacity: 1;
         }
 
-        /* --- أيقونات واقعية بـ Glow --- */
+        /* --- أيقونات واقعية بـ PBR Glow --- */
         .card i {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
             color: var(--color);
-            filter: drop-shadow(0 0 10px var(--color)); /* توهج ضوئي حقيقي للأيقونة */
-            transform: translateZ(30px); /* أيقونة تطفو خارج البطاقة */
+            filter: drop-shadow(0 0 12px var(--color)); /* توهج ضوئي حقيقي */
+            transform: translateZ(40px); /* أيقونة تطفو خارج البطاقة */
+            transition: transform 0.2s ease;
         }
 
         .card span {
             color: white;
-            font-weight: 500;
-            font-size: 0.95rem;
+            font-weight: 600;
+            font-size: 0.85rem;
             letter-spacing: 1px;
-            transform: translateZ(15px);
+            text-transform: uppercase;
+            transform: translateZ(20px);
+            opacity: 0.9;
         }
 
-        /* --- فوتر واقعي --- */
+        /* عند الـ Hover: تأثير تضخيم الأيقونة */
+        .card:hover i { transform: translateZ(60px) scale(1.1); }
+
+        /* --- فوتر احترافي --- */
         footer {
-            margin-top: 8vh;
             text-align: center;
-            opacity: 0.4;
-            font-size: 0.8rem;
+            opacity: 0.3;
+            font-size: 0.75rem;
             transform: translateZ(10px);
+            width: 100%;
         }
         .rights { color: #00f2ea; font-weight: bold; }
 
@@ -180,57 +230,59 @@
 <body>
 
     <div id="loader">
-        <i class="fas fa-cube fa-spin" style="font-size: 3rem; color: #00f2ea; margin-bottom: 20px;"></i>
-        <h1>WANO REALITY</h1>
+        <div class="core"></div>
+        <h1>ESTABLISHING<br>REALITY LINK</h1>
     </div>
 
     <canvas id="bg-canvas"></canvas>
+    
+    <div id="aberration-overlay"></div>
 
     <main class="container">
         <header>
             <h1 class="glitch-title">وائل | Wano</h1>
-            <p class="username">WN6B // THE EXPERIENCE</p>
+            <p class="username">WN6B // THE SIMULATION</p>
         </header>
 
         <div class="links-grid" id="grid">
             
-            <a href="https://youtube.com/@wn5b" target="_blank" class="card" style="--color: #ff0000; --glow-color: rgba(255, 0, 0, 0.2);">
+            <a href="https://youtube.com/@wn5b" target="_blank" class="card" style="--color: #ff0000; --glow-color: var(--glow-yt);">
                 <div class="card-glow"></div>
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
             </a>
 
-            <a href="https://discord.com/users/wn6b" target="_blank" class="card" style="--color: #5865F2; --glow-color: rgba(88, 101, 242, 0.2);">
+            <a href="https://discord.com/users/wn6b" target="_blank" class="card" style="--color: #5865F2; --glow-color: var(--glow-dc);">
                 <div class="card-glow"></div>
                 <i class="fab fa-discord"></i>
                 <span>Discord</span>
             </a>
 
-            <a href="https://instagram.com/talal._.75" target="_blank" class="card" style="--color: #E1306C; --glow-color: rgba(225, 48, 108, 0.2);">
+            <a href="https://instagram.com/talal._.75" target="_blank" class="card" style="--color: #E1306C; --glow-color: var(--glow-ig);">
                 <div class="card-glow"></div>
                 <i class="fab fa-instagram"></i>
                 <span>Instagram</span>
             </a>
 
-            <a href="https://www.snapchat.com/add/w_n6b" target="_blank" class="card" style="--color: #FFFC00; --glow-color: rgba(255, 252, 0, 0.1);">
+            <a href="https://www.snapchat.com/add/w_n6b" target="_blank" class="card" style="--color: #FFFC00; --glow-color: var(--glow-sc);">
                 <div class="card-glow"></div>
                 <i class="fab fa-snapchat"></i>
                 <span>Snapchat</span>
             </a>
 
-            <a href="https://tiktok.com/@._wan5" target="_blank" class="card" style="--color: #00f2ea; --glow-color: rgba(0, 242, 234, 0.2);">
+            <a href="https://tiktok.com/@._wan5" target="_blank" class="card" style="--color: #00f2ea; --glow-color: var(--glow-tk);">
                 <div class="card-glow"></div>
                 <i class="fab fa-tiktok"></i>
                 <span>TikTok</span>
             </a>
 
-            <a href="https://github.com/wn6b" target="_blank" class="card" style="--color: #ffffff; --glow-color: rgba(255, 255, 255, 0.1);">
+            <a href="https://github.com/wn6b" target="_blank" class="card" style="--color: #ffffff; --glow-color: var(--glow-gh);">
                 <div class="card-glow"></div>
                 <i class="fab fa-github"></i>
                 <span>GitHub</span>
             </a>
 
-            <a href="https://wa.me/201145974113" target="_blank" class="card" style="--color: #25D366; --glow-color: rgba(37, 211, 102, 0.2);">
+            <a href="https://wa.me/201145974113" target="_blank" class="card" style="--color: #25D366; --glow-color: var(--glow-wa);">
                 <div class="card-glow"></div>
                 <i class="fab fa-whatsapp"></i>
                 <span>WhatsApp</span>
@@ -239,7 +291,7 @@
         </div>
 
         <footer>
-            <p>© 2026 Reality Simulation. Crafted by <span class="rights">wn6b</span></p>
+            <p>© 2026 Reality Simulation. WANO_WN6B // ALL RIGHTS RESERVED.</p>
         </footer>
     </main>
 
@@ -247,173 +299,221 @@
 
     <script>
         // ==========================================
-        // 1. محرك الخلفية الفيزيائية (Advanced Three.js Particles)
+        // 1. محرك الخلفية السائلة الفيزيائية (Advanced Cosmic Fluid)
         // ==========================================
         
-        let scene, camera, renderer, starMesh, initialPositions;
-        let mouse = new THREE.Vector2(0, 0);
-        let targetMouse = new THREE.Vector2(0, 0);
+        let scene, camera, renderer, fluidMesh, initialPositions, velocities;
+        let touches = []; // لتخزين نقاط اللمس المتعدد
+        let isMobile = window.innerWidth < 768;
 
         function init3D() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // تحديد بكسل راشيو للأداء
 
-            // جزيئات (دخان مادي لامع) بدلاً من نجوم عادية
-            const starsGeometry = new THREE.BufferGeometry();
-            const starsCount = window.innerWidth > 768 ? 1500 : 500; // تقليل العدد للموبايل للحفاظ على الأداء
-            const positions = new Float32Array(starsCount * 3);
-            initialPositions = new Float32Array(starsCount * 3); // لتذكر المكان الأصلي
+            // محاكاة سائل كوني: جزيئات بفيزياء حقيقية
+            const fluidGeometry = new THREE.BufferGeometry();
+            
+            // ضبط العدد بناءً على الجهاز (تحسين الأداء)
+            const particleCount = isMobile ? 800 : 2500; 
+            
+            const positions = new Float32Array(particleCount * 3);
+            initialPositions = new Float32Array(particleCount * 3);
+            velocities = new Float32Array(particleCount * 3); // تخزين سرعة كل جزيء للفيزياء
 
-            for(let i=0; i<starsCount * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 100;
+            for(let i=0; i<particleCount * 3; i+=3) {
+                // توزيع عشوائي في الفضاء
+                positions[i] = (Math.random() - 0.5) * 120;
+                positions[i+1] = (Math.random() - 0.5) * 80;
+                positions[i+2] = (Math.random() - 0.5) * 60;
+                
                 initialPositions[i] = positions[i];
-            }
-            starsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                initialPositions[i+1] = positions[i+1];
+                initialPositions[i+2] = positions[i+2];
 
-            const starsMaterial = new THREE.PointsMaterial({
+                velocities[i] = 0;
+                velocities[i+1] = 0;
+                velocities[i+2] = 0;
+            }
+            fluidGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const fluidMaterial = new THREE.PointsMaterial({
                 color: 0xffffff,
-                size: 0.15,
+                size: isMobile ? 0.2 : 0.15,
                 transparent: true,
-                opacity: 0.8,
-                blending: THREE.AdditiveBlending, // لدمج الأضواء بواقعية
+                opacity: 0.7,
+                blending: THREE.AdditiveBlending, // دمج ضوئي واقعي
                 depthWrite: false
             });
 
-            starMesh = new THREE.Points(starsGeometry, starsMaterial);
-            scene.add(starMesh);
+            fluidMesh = new THREE.Points(fluidGeometry, fluidMaterial);
+            scene.add(fluidMesh);
 
-            camera.position.z = 40;
+            camera.position.z = 50;
             animate();
         }
 
-        // تحريك الجزيئات بناءً على فيزياء وهمية (Mouse Attraction)
+        // تحريك السائل بفيزياء حقيقية (محاكاة الدوامات)
         function animate() {
             requestAnimationFrame(animate);
 
-            // سلاسة في حركة الماوس
-            mouse.x += (targetMouse.x - mouse.x) * 0.05;
-            mouse.y += (targetMouse.y - mouse.y) * 0.05;
+            const positions = fluidMesh.geometry.attributes.position.array;
+            const time = Date.now() * 0.001;
 
-            const positions = starMesh.geometry.attributes.position.array;
-            
+            // تطبيق الفيزياء على كل جزيء
             for(let i=0; i<positions.length; i+=3) {
-                // تدوير بطيء جداً للخلفية
-                positions[i] += Math.sin(Date.now() * 0.001 + positions[i+1]) * 0.002;
-
-                // التفاعل مع الماوس: الجزيئات تهرب من الماوس
-                const dx = positions[i] - (mouse.x * 50);
-                const dy = positions[i+1] - (mouse.y * 30);
-                const dist = Math.sqrt(dx*dx + dy*dy);
-
-                if(dist < 15) {
-                    const force = (15 - dist) / 15;
-                    positions[i] += dx * force * 0.02;
-                    positions[i+1] += dy * force * 0.02;
-                }
                 
-                // العودة البطئية للمكان الأصلي
-                positions[i] += (initialPositions[i] - positions[i]) * 0.01;
-                positions[i+1] += (initialPositions[i+1] - positions[i+1]) * 0.01;
-            }
-            starMesh.geometry.attributes.position.needsUpdate = true;
+                // 1. حركة تموج طبيعية (Noise)
+                positions[i] += Math.sin(time + positions[i+1] * 0.1) * 0.01;
+                positions[i+1] += Math.cos(time + positions[i] * 0.1) * 0.01;
 
-            starMesh.rotation.y += 0.0005;
+                // 2. التفاعل مع نقاط اللمس/الماوس (Fluid Interaction)
+                touches.forEach(touch => {
+                    const dx = positions[i] - touch.x;
+                    const dy = positions[i+1] - touch.y;
+                    const distSq = dx*dx + dy*dy; // استخدام المربع للسرعة
+
+                    // إذا كان الجزيء قريباً من اللمس
+                    if(distSq < 200) {
+                        const dist = Math.sqrt(distSq);
+                        const force = (20 - dist) / 20;
+                        
+                        // دفع الجزيئات بعيداً (خلق دوامة)
+                        velocities[i] += (dx / dist) * force * 0.08;
+                        velocities[i+1] += (dy / dist) * force * 0.08;
+                    }
+                });
+
+                // 3. تطبيق السرعة الحالية (Velocities)
+                positions[i] += velocities[i];
+                positions[i+1] += velocities[i+1];
+
+                // 4. الاحتكاك (Damping): الجزيئات تتباطأ بمرور الوقت
+                velocities[i] *= 0.96;
+                velocities[i+1] *= 0.96;
+
+                // 5. قوة العودة للمكان الأصلي (Spring Force)
+                positions[i] += (initialPositions[i] - positions[i]) * 0.02;
+                positions[i+1] += (initialPositions[i+1] - positions[i+1]) * 0.02;
+                positions[i+2] += (initialPositions[i+2] - positions[i+2]) * 0.01;
+            }
+            fluidMesh.geometry.attributes.position.needsUpdate = true;
+
+            // تدوير بطيء جداً للمشهد ككل
+            fluidMesh.rotation.y += 0.0003;
 
             renderer.render(scene, camera);
         }
 
         // ==========================================
-        // 2. تفاعلات البطاقات ثلاثية الأبعاد (Real-time 3D Tilt & Glow)
+        // 2. محرك التفاعل الـ 3D مع البطاقات والعدسة
         // ==========================================
         
-        const grid = document.getElementById('grid');
         const cards = document.querySelectorAll('.card');
+        const aberrationOverlay = document.getElementById('aberration-overlay');
 
-        // دالة تحريك الإضاءة والإمالة 3D
+        // دالة تحريك الإضاءة والإمالة 3D وتأثير العدسة
         function handleInteraction(e, card) {
             const rect = card.getBoundingClientRect();
             
-            // حساب مكان الإصبع/الماوس داخل البطاقة (0 to 1)
+            // مكأن اللمس/الماوس داخل البطاقة (0 to 1)
             const x = (e.clientX - rect.left) / rect.width;
             const y = (e.clientY - rect.top) / rect.height;
 
-            // 1. تحديث مكأن ضوء الخلفية (Glow) داخل CSS
+            // 1. تحديث مكأن ضوء الخلفية (Glow)
             const glow = card.querySelector('.card-glow');
-            const glowX = x * 100;
-            const glowY = y * 100;
-            glow.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, var(--glow-color), transparent 70%)`;
+            glow.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, var(--glow-color), transparent 70%)`;
 
-            // 2. حساب زاوية الإمالة الـ 3D (تصل إلى 15 درجة)
-            const tiltX = (0.5 - y) * 30; // إمالة عمودية
-            const tiltY = (x - 0.5) * 30; // إمالة أفقية
+            // 2. حساب إمالة 3D واقعية (تصل لـ 20 درجة)
+            const tiltX = (0.5 - y) * 40; 
+            const tiltY = (x - 0.5) * 40; 
 
-            // تطبيق التحويل مع العمق
-            card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05) translateZ(10px)`;
+            // تطبيق الإمالة مع العمق
+            card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.08) translateZ(20px)`;
             
-            // إضافة ظل واقعي متغير (Dynamic Drop Shadow)
-            const shadowX = (0.5 - x) * 20;
-            const shadowY = (0.5 - y) * 20;
+            // ظل واقعي متغير
             card.style.boxShadow = `
                 inset 0 1px 1px rgba(255, 255, 255, 0.1),
-                ${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.7)`;
+                ${(0.5 - x) * 30}px ${(0.5 - y) * 30}px 40px rgba(0, 0, 0, 0.7)`;
+
+            // 3. تفعيل تأثير تشوه العدسة (عند التفاعل القوي)
+            aberrationOverlay.style.opacity = '1';
         }
 
-        // إعادة البطاقة لوضعها الطبيعي
         function resetCard(card) {
             card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1) translateZ(0px)`;
             card.style.boxShadow = `
-                inset 0 1px 1px rgba(255, 255, 255, 0.1),
-                0 10px 20px rgba(0, 0, 0, 0.5)`;
+                inset 0 1px 1px rgba(255, 255, 255, 0.08),
+                0 15px 35px rgba(0, 0, 0, 0.6)`;
+            aberrationOverlay.style.opacity = '0';
         }
 
-        // --- إضافة المستمعين (للموس واللمس) ---
+        // --- إضافة المستمعين للبطاقات (ماوس ولمس) ---
         cards.forEach(card => {
-            // للكمبيوتر (Mouse)
+            // للبيسي
             card.addEventListener('mousemove', (e) => handleInteraction(e, card));
             card.addEventListener('mouseleave', () => resetCard(card));
 
             // للموبايل (Touch)
-            card.addEventListener('touchmove', (e) => {
-                if(e.touches.length > 0) {
-                    handleInteraction(e.touches[0], card);
-                }
-            }, { passive: true });
+            card.addEventListener('touchstart', (e) => handleInteraction(e.touches[0], card), {passive: true});
+            card.addEventListener('touchmove', (e) => handleInteraction(e.touches[0], card), {passive: true});
             card.addEventListener('touchend', () => resetCard(card));
         });
 
         // ==========================================
-        // 3. تتبع الماوس العام والتحميل
+        // 3. تتبع حركة اللمس/الماوس العامة للفيزياء
         // ==========================================
         
+        // تحويل إحداثيات الشاشة لإحداثيات Three.js الـ 3D
+        function get3DCoords(clientX, clientY) {
+            return {
+                x: (clientX / window.innerWidth) * 120 - 60,
+                y: -(clientY / window.innerHeight) * 80 + 40
+            };
+        }
+
+        // للبيسي (نقطة واحدة)
         window.addEventListener('mousemove', (e) => {
-            // تحويل إحداثيات الماوس لـ (-1 to 1) من أجل Three.js
-            targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            touches = [get3DCoords(e.clientX, e.clientY)];
         });
 
-        // الموبايل: تحريك الجزيئات مع اللمس
+        // للموبايل (يدعم المتعدد)
+        window.addEventListener('touchstart', (e) => {
+            updateTouches(e.touches);
+        }, {passive: true});
+        
         window.addEventListener('touchmove', (e) => {
-            if(e.touches.length > 0) {
-                targetMouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-                targetMouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-            }
+            updateTouches(e.touches);
+        }, {passive: true});
+        
+        window.addEventListener('touchend', (e) => {
+            updateTouches(e.touches);
         });
 
-        // تشغيل كل شيء عند التحميل
+        function updateTouches(touchList) {
+            touches = [];
+            for(let i=0; i<touchList.length; i++) {
+                touches.push(get3DCoords(touchList[i].clientX, touchList[i].clientY));
+            }
+        }
+
+        // ==========================================
+        // 4. التحميل وتجاوب الشاشة
+        // ==========================================
+        
         window.addEventListener('load', () => {
             init3D();
-            // إخفاء شاشة التحميل بعد ثانية ونصف
+            // إخفاء شاشة التحميل بعد ثانيتين (Neurolink Sync)
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
                 setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
-            }, 1500);
+            }, 2000);
         });
 
-        // استجابة لتغير حجم الشاشة
         window.addEventListener('resize', () => {
+            isMobile = window.innerWidth < 768;
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
