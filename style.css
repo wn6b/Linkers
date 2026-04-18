@@ -1,111 +1,117 @@
 :root {
-    --bg-dark: #050505;
-    --text-white: #ffffff;
+    --glass-bg: rgba(15, 15, 20, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --text-glow: rgba(255, 255, 255, 0.8);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-white);
-    overflow-x: hidden;
+    background-color: #000;
+    overflow: hidden; /* نمنع السكرول حتى نركز عالـ 3D */
+    color: white;
 }
 
-#bg-canvas {
+#webgl-canvas {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
 }
 
-.container {
-    min-height: 100vh;
+#ui-layer {
+    position: relative;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px 20px;
-    backdrop-filter: blur(10px);
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    pointer-events: none; /* عشان نقدر نلمس الخلفية الـ 3D */
 }
 
 header {
     text-align: center;
     margin-bottom: 40px;
+    pointer-events: auto;
 }
 
 .glitch {
-    font-size: 3rem;
-    font-weight: bold;
-    text-shadow: 0 0 20px rgba(255,255,255,0.5);
-    position: relative;
-}
-
-.username {
-    color: #888;
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-shadow: 0 0 20px var(--text-glow);
     letter-spacing: 2px;
 }
 
-.links-grid {
+.cyber-text {
+    color: #00f2ea;
+    letter-spacing: 5px;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.glass-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 20px;
     width: 100%;
     max-width: 800px;
+    pointer-events: auto;
+    perspective: 1000px;
 }
 
-.card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     border-radius: 20px;
-    padding: 25px;
-    text-decoration: none;
-    color: white;
+    padding: 25px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    backdrop-filter: blur(15px);
-    position: relative;
-    overflow: hidden;
+    text-decoration: none;
+    color: white;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-style: preserve-3d;
 }
 
-.card i {
+.glass-card i {
     font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--color);
-    filter: drop-shadow(0 0 10px var(--color));
+    margin-bottom: 12px;
+    color: var(--brand);
+    filter: drop-shadow(0 0 15px var(--brand));
+    transition: transform 0.3s ease;
 }
 
-.card:hover {
+.glass-card span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.glass-card:hover {
     transform: translateY(-10px) scale(1.05);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--color);
-    box-shadow: 0 0 30px var(--color);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--brand);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px var(--brand);
 }
 
-footer {
-    margin-top: 50px;
-    font-size: 0.9rem;
-    opacity: 0.6;
+.glass-card:hover i {
+    transform: translateZ(30px) scale(1.2);
 }
 
-.rights {
-    color: #00f2ea;
-    font-weight: bold;
-}
-
-/* Loading screen */
-#loader {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 1s ease;
+/* للموبايل */
+@media (max-width: 768px) {
+    .glass-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .glitch { font-size: 2.5rem; }
 }
