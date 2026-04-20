@@ -1,51 +1,485 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
-    <title>وائل | Wano - 2026 Elite</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wano | وائل</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon-cyan: #00f5ff;
+    --neon-pink: #ff00ff;
+    --neon-green: #00ff88;
+    --neon-orange: #ff6600;
+    --neon-yellow: #ffff00;
+    --bg-dark: #010208;
+    --glass: rgba(255,255,255,0.03);
+    --glass-border: rgba(255,255,255,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-dark);
+    font-family: 'Tajawal', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  #cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 42px; height: 42px;
+    border: 1.2px solid rgba(0,245,255,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.08s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* ADVANCED GRID BACKGROUND */
+  .grid-bg {
+    position: fixed;
+    inset: -50px;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 15s linear infinite;
+    z-index: 0;
+    perspective: 1000px;
+    transform: rotateX(5deg);
+  }
+  @keyframes gridMove {
+    0% { transform: translateY(0) rotateX(5deg); }
+    100% { transform: translateY(50px) rotateX(5deg); }
+  }
+
+  /* DEPTH OVERLAY - REALISM BOOST */
+  .depth-overlay {
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 50% 50%, transparent 0%, rgba(1, 2, 8, 0.4) 100%),
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,245,255,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255,0,255,0.08) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) scale(0); opacity: 0; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.2) 1px, rgba(0,0,0,0.2) 2px);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 80px;
+    perspective: 1200px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeSlideDown 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-60px) rotateX(-20deg); }
+    to { opacity: 1; transform: translateY(0) rotateX(0); }
+  }
+
+  .avatar-wrapper {
+    position: relative;
+    width: 130px; height: 130px;
+    margin: 0 auto 24px;
+  }
+  .avatar-ring {
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--neon-cyan), var(--neon-pink), var(--neon-green), var(--neon-cyan));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), white calc(100% - 2px));
+    animation: rotateSlow 3s linear infinite;
+    filter: drop-shadow(0 0 8px var(--neon-cyan));
+  }
+  .avatar-ring2 {
+    position: absolute;
+    inset: -25px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0,245,255,0.2);
+    animation: rotateSlow 12s linear infinite reverse;
+  }
+  @keyframes rotateSlow { 100% { transform: rotate(360deg); } }
+
+  .avatar-inner {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #050515, #0a0a25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px;
+    border: 1px solid rgba(0,245,255,0.3);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,245,255,0.15), inset 0 0 20px rgba(0,0,0,0.8);
+  }
+
+  .name {
+    font-size: clamp(2.2rem, 7vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    background: linear-gradient(to bottom, #fff 30%, var(--neon-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px rgba(0,245,255,0.5));
+  }
+
+  .tagline {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .stats-bar {
+    display: flex;
+    gap: 35px;
+    margin-top: 30px;
+    justify-content: center;
+  }
+  .stat-num {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px var(--neon-cyan);
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+  }
+
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 750px;
+  }
+
+  .platform-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    backdrop-filter: blur(10px);
+  }
+
+  .platform-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .platform-card:hover::before { opacity: 1; }
+
+  .platform-icon {
+    width: 60px; height: 60px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateZ(30px);
+  }
+  .platform-card:hover .platform-icon { transform: translateZ(50px) scale(1.1); }
+
+  .platform-label {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 800;
+    transform: translateZ(20px);
+  }
+
+  .glow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 15px var(--c);
+    position: absolute;
+    bottom: 15px; right: 15px;
+    opacity: 0.5;
+  }
+
+  .bottom-brand {
+    margin-top: 80px;
+    text-align: center;
+    opacity: 0.6;
+  }
+  .brand-text {
+    font-size: 0.75rem;
+    color: #fff;
+    letter-spacing: 5px;
+  }
+  .brand-line {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    margin: 15px auto;
+  }
+
+  @media (max-width: 500px) {
+    .platforms-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .name { font-size: 2.2rem; }
+  }
+</style>
 </head>
 <body>
-    <canvas id="gl-canvas"></canvas>
 
-    <main class="ui-container">
-        <header>
-            <h1 class="glitch-text" data-text="وائل | Wano">وائل | Wano</h1>
-            <p class="cyber-tag">@wn6b // THE SIMULATION</p>
-        </header>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-        <div class="glass-grid" id="links-grid">
-            <a href="https://youtube.com/@wn5b" target="_blank" class="card" style="--glow: #ff0000;">
-                <i class="fab fa-youtube"></i><span>YouTube</span>
-            </a>
-            <a href="https://discord.com/users/wn6b" target="_blank" class="card" style="--glow: #5865F2;">
-                <i class="fab fa-discord"></i><span>Discord</span>
-            </a>
-            <a href="https://instagram.com/talal._.75" target="_blank" class="card" style="--glow: #E1306C;">
-                <i class="fab fa-instagram"></i><span>Instagram</span>
-            </a>
-            <a href="https://www.snapchat.com/add/w_n6b" target="_blank" class="card" style="--glow: #FFFC00;">
-                <i class="fab fa-snapchat"></i><span>Snapchat</span>
-            </a>
-            <a href="https://tiktok.com/@._wan5" target="_blank" class="card" style="--glow: #00f2ea;">
-                <i class="fab fa-tiktok"></i><span>TikTok</span>
-            </a>
-            <a href="https://github.com/wn6b" target="_blank" class="card" style="--glow: #ffffff;">
-                <i class="fab fa-github"></i><span>GitHub</span>
-            </a>
-            <a href="https://wa.me/201145974113" target="_blank" class="card" style="--glow: #25D366;">
-                <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
-            </a>
-        </div>
-        
-        <footer>
-            <p>© 2026 Crafted by <span class="rights">wn6b</span></p>
-        </footer>
-    </main>
+<div class="grid-bg"></div>
+<div class="depth-overlay"></div>
+<div class="scanlines"></div>
+<div class="particles" id="particles"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="script.js"></script>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="hud">WANO.SYS // v2.0.6 // ONLINE</div>
+
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+
+<div class="wrapper">
+
+  <div class="header">
+    <div class="avatar-wrapper">
+      <div class="avatar-ring2"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-inner">🤖</div>
+    </div>
+
+    <div class="name name-glitch" data-text="وائل | Wano">وائل | Wano</div>
+
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      <span class="status-text">متاح الآن</span>
+    </div>
+
+    <div class="tagline">Bot Developer · Digital Creator</div>
+
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">منصات</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">أفكار</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">نشاط</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="platforms-grid">
+
+    <a href="https://youtube.com/@wn6b" target="_blank" class="platform-card card-yt" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.96-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" fill="#ff2d2d"/>
+          <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/>
+        </svg>
+      </div>
+      <div class="platform-label">YouTube</div>
+      <div class="glow-dot" style="--c: #ff2d2d;"></div>
+    </a>
+
+    <a href="https://tiktok.com/@wn6b" target="_blank" class="platform-card card-tt" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.79 1.53V6.77a4.85 4.85 0 0 1-1.02-.08z" fill="#69c9d0"/>
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.79 1.53V6.77a4.85 4.85 0 0 1-1.02-.08z" fill="white" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="platform-label">TikTok</div>
+      <div class="glow-dot" style="--c: #69c9d0;"></div>
+    </a>
+
+    <a href="https://snapchat.com/add/wn6b" target="_blank" class="platform-card card-sc" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12.0054 2C9.2912 2 6.85453 3.53977 5.72939 5.96055C5.20166 7.08543 5.14263 8.35986 5.14263 9.4988C5.14263 9.87939 5.13232 10.6484 5.05273 11.4639C4.96289 11.4492 4.85278 11.4375 4.72217 11.4375C4.12524 11.4375 3.60547 11.7622 3.60547 12.2441C3.60547 12.7002 4.04785 12.9854 4.59741 13.0825C4.57617 13.1221 4.55469 13.1621 4.53174 13.2021C4.19434 13.8193 3.66455 14.2793 2.98877 14.4463C2.55664 14.5508 2 14.7002 2 15.2539C2 15.6431 2.3291 15.9707 3.00488 16.1338C3.47461 16.2471 3.7998 16.4658 3.7998 16.4658C4.07031 16.6338 4.26953 16.8662 4.2832 17.3447C4.2959 17.792 4.68164 18.0713 5.16748 18.0713C5.31934 18.0713 5.47998 18.043 5.64893 17.9922C6.21973 17.8154 6.93164 17.5967 7.79004 17.5967C8.07568 17.5967 8.36963 17.624 8.66553 17.6855C9.14941 17.7871 9.59619 18.0381 10.0156 18.3252C10.7988 18.8418 11.4648 19.3447 12.0054 19.3447C12.5439 19.3447 13.21 18.8418 13.9932 18.3252C14.4126 18.0381 14.8594 17.7871 15.3433 17.6855C15.6392 17.624 15.9331 17.5967 16.2188 17.5967C17.0771 17.5967 17.7891 17.8154 18.3599 17.9922C18.5288 18.043 18.6895 18.0713 18.8413 18.0713C19.3271 18.0713 19.7129 17.792 19.7256 17.3447C19.7393 16.8662 19.9385 16.6338 20.209 16.4658C20.209 16.4658 20.5342 16.2471 21.0039 16.1338C21.6797 15.9707 22.0088 15.6431 22.0088 15.2539C22.0088 14.7002 21.4521 14.5508 21.02 14.4463C20.3442 14.2793 19.8145 13.8193 19.4771 13.2021C19.4541 13.1621 19.4326 13.1221 19.4113 13.0825C19.9609 12.9854 20.4033 12.7002 20.4033 12.2441C20.4033 11.7622 19.8838 11.4375 19.2866 11.4375C19.1562 11.4375 19.0459 11.4492 18.9561 11.4639C18.8765 10.6484 18.8662 9.87939 18.8662 9.4988C18.8662 8.35986 18.8071 7.08543 18.2793 5.96055C17.1543 3.53977 14.7197 2 12.0054 2Z" fill="#fffc00"/>
+        </svg>
+      </div>
+      <div class="platform-label">Snapchat</div>
+      <div class="glow-dot" style="--c: #fffc00;"></div>
+    </a>
+    <a href="https://wa.me/1145974113" target="_blank" class="platform-card card-wa" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12C2 13.85 2.5 15.58 3.37 17.07L2 22l5.1-1.34A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.02.79.81-2.95-.2-.31A8.2 8.2 0 1 1 12 20.2zm4.45-6.1c-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.46-.4-.4-.54-.41H8.5c-.14 0-.36.05-.55.26-.19.21-.72.7-.72 1.71s.74 1.98.84 2.12c.1.14 1.46 2.23 3.54 3.12.5.21.88.34 1.18.43.5.16.95.14 1.3.08.4-.06 1.22-.5 1.4-.98.17-.48.17-.9.12-.98-.05-.09-.21-.14-.45-.26z" fill="#25d366"/>
+        </svg>
+      </div>
+      <div class="platform-label">WhatsApp</div>
+      <div class="glow-dot" style="--c: #25d366;"></div>
+    </a>
+
+    <a href="https://discord.com/users/wn6b" target="_blank" class="platform-card card-dc" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.044.03.057a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" fill="#5865f2"/>
+        </svg>
+      </div>
+      <div class="platform-label">Discord</div>
+      <div class="glow-dot" style="--c: #5865f2;"></div>
+    </a>
+
+    <a href="https://github.com/wn6b" target="_blank" class="platform-card card-gh" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z" fill="white"/>
+        </svg>
+      </div>
+      <div class="platform-label">GitHub</div>
+      <div class="glow-dot" style="--c: #ffffff;"></div>
+    </a>
+
+  </div>
+
+  <div class="bottom-brand">
+    <div class="brand-line"></div>
+    <div class="brand-text">وائل | Wano © 2026 // @wn6b</div>
+    <div class="brand-line"></div>
+  </div>
+
+</div>
+
+<script>
+// CURSOR ENGINE
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+// PARTICLES ENGINE
+const pContainer = document.getElementById('particles');
+const colors = ['#00f5ff','#ff00ff','#00ff88','#ffff00'];
+for (let i = 0; i < 40; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  p.style.cssText = `
+    width: ${size}px; height: ${size}px;
+    left: ${Math.random() * 100}%;
+    background: ${colors[Math.floor(Math.random() * colors.length)]};
+    animation-duration: ${10 + Math.random() * 10}s;
+    animation-delay: ${-Math.random() * 20}s;
+    box-shadow: 0 0 ${size*4}px currentColor;
+  `;
+  pContainer.appendChild(p);
+}
+
+// 90% REALISM 3D TILT
+document.querySelectorAll('.platform-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    card.style.setProperty('--x', (x * 100) + '%');
+    card.style.setProperty('--y', (y * 100) + '%');
+    
+    const rotX = (y - 0.5) * -20;
+    const rotY = (x - 0.5) * 20;
+    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-10px) scale(1.05)`;
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+  });
+});
+
+function addRipple(e, el) {
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  const rect = el.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height) * 2.5;
+  r.style.width = r.style.height = size + 'px';
+  r.style.left = (e.clientX - rect.left - size/2) + 'px';
+  r.style.top = (e.clientY - rect.top - size/2) + 'px';
+  el.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+</script>
 </body>
 </html>
