@@ -156,11 +156,18 @@
     border-radius: 50%;
     background: linear-gradient(135deg, #050515, #0a0a25);
     display: flex; align-items: center; justify-content: center;
-    font-size: 52px;
     border: 1px solid rgba(0,245,255,0.3);
     overflow: hidden;
     position: relative;
     box-shadow: 0 0 40px rgba(0,245,255,0.15), inset 0 0 20px rgba(0,0,0,0.8);
+  }
+
+  /* USER IMAGE STYLES */
+  .avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(1.1) contrast(1.1); /* Slight boost for neon environment */
   }
 
   .name {
@@ -223,6 +230,7 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     backdrop-filter: blur(10px);
+    -webkit-tap-highlight-color: transparent; /* Remove default mobile highlight */
   }
 
   .platform-card::before {
@@ -234,6 +242,19 @@
     transition: opacity 0.3s;
   }
   .platform-card:hover::before { opacity: 1; }
+
+  /* TOUCH RIPPLE EFFECT */
+  .ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleEffect 0.6s linear;
+    pointer-events: none;
+  }
+  @keyframes rippleEffect {
+    to { transform: scale(4); opacity: 0; }
+  }
 
   .platform-icon {
     width: 60px; height: 60px;
@@ -293,35 +314,19 @@
 <div class="scanlines"></div>
 <div class="particles" id="particles"></div>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
-
-<div class="hud">WANO.SYS // v2.0.6 // ONLINE</div>
-
-<div class="corner corner-tl"></div>
-<div class="corner corner-tr"></div>
-<div class="corner corner-bl"></div>
-<div class="corner corner-br"></div>
-
 <div class="wrapper">
 
   <div class="header">
     <div class="avatar-wrapper">
       <div class="avatar-ring2"></div>
       <div class="avatar-ring"></div>
-      <div class="avatar-inner">🤖</div>
+      <div class="avatar-inner">
+        <img src="23575.jpg" alt="وائل | Wano" class="avatar-image">
+      </div>
     </div>
-
-    <div class="name name-glitch" data-text="وائل | Wano">وائل | Wano</div>
-
-    <div class="status-pill">
-      <div class="status-dot"></div>
-      <span class="status-text">متاح الآن</span>
-    </div>
-
+    <div class="name">وائل | Wano</div>
     <div class="tagline">Bot Developer · Digital Creator</div>
-
+    
     <div class="stats-bar">
       <div class="stat">
         <div class="stat-num">6+</div>
@@ -371,6 +376,7 @@
       <div class="platform-label">Snapchat</div>
       <div class="glow-dot" style="--c: #fffc00;"></div>
     </a>
+
     <a href="https://wa.me/1145974113" target="_blank" class="platform-card card-wa" onclick="addRipple(event, this)">
       <div class="platform-icon">
         <svg viewBox="0 0 24 24" fill="none">
@@ -405,7 +411,7 @@
 
   <div class="bottom-brand">
     <div class="brand-line"></div>
-    <div class="brand-text">وائل | Wano © 2026 // @wn6b</div>
+    <div class="brand-text">وائل | Wano © 2026</div>
     <div class="brand-line"></div>
   </div>
 
@@ -469,17 +475,57 @@ document.querySelectorAll('.platform-card').forEach(card => {
   });
 });
 
+// INCREASED REALISM: TOUCH RIPPLE FUNCTION
 function addRipple(e, el) {
-  const r = document.createElement('div');
-  r.className = 'ripple';
+  // Remove existing ripples
+  const oldRipple = el.querySelector('.ripple');
+  if (oldRipple) {
+    oldRipple.remove();
+  }
+
+  const ripple = document.createElement('div');
+  ripple.className = 'ripple';
+  
   const rect = el.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height) * 2.5;
-  r.style.width = r.style.height = size + 'px';
-  r.style.left = (e.clientX - rect.left - size/2) + 'px';
-  r.style.top = (e.clientY - rect.top - size/2) + 'px';
-  el.appendChild(r);
-  setTimeout(() => r.remove(), 600);
+  
+  // Get pointer position relative to the element
+  let clientX, clientY;
+  if (e.changedTouches) {
+    // Touch event
+    clientX = e.changedTouches[0].clientX;
+    clientY = e.changedTouches[0].clientY;
+  } else {
+    // Mouse event
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+  
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  
+  // Size the ripple based on the largest dimension
+  const size = Math.max(rect.width, rect.height) * 2;
+  ripple.style.width = ripple.style.height = size + 'px';
+  
+  // Position the ripple center at the touch point
+  ripple.style.left = x - size / 2 + 'px';
+  ripple.style.top = y - size / 2 + 'px';
+  
+  el.appendChild(ripple);
+  
+  // The ripple removes itself via CSS animation (0.6s)
+  // But we clear it just in case if the user clicks very fast
+  setTimeout(() => {
+    if (ripple.parentNode === el) {
+        ripple.remove();
+    }
+  }, 600);
 }
+
+// Ensure cards capture both click and touch for the ripple
+document.querySelectorAll('.platform-card').forEach(card => {
+    card.addEventListener('touchstart', (e) => addRipple(e, card), {passive: true});
+});
 </script>
 </body>
 </html>
