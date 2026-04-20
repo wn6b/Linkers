@@ -10,7 +10,6 @@
     --neon-cyan: #00f5ff;
     --neon-pink: #ff00ff;
     --neon-green: #00ff88;
-    --neon-orange: #ff6600;
     --neon-yellow: #ffff00;
     --bg-dark: #010208;
     --glass: rgba(255,255,255,0.03);
@@ -162,12 +161,17 @@
     box-shadow: 0 0 40px rgba(0,245,255,0.15), inset 0 0 20px rgba(0,0,0,0.8);
   }
 
-  /* USER IMAGE STYLES */
+  /* USER IMAGE STYLES - FULLY INTEGRATED */
   .avatar-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(1.1) contrast(1.1); /* Slight boost for neon environment */
+    border-radius: 50%;
+    filter: brightness(1.1) contrast(1.1);
+    z-index: 5;
   }
 
   .name {
@@ -230,7 +234,7 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     backdrop-filter: blur(10px);
-    -webkit-tap-highlight-color: transparent; /* Remove default mobile highlight */
+    -webkit-tap-highlight-color: transparent;
   }
 
   .platform-card::before {
@@ -242,6 +246,16 @@
     transition: opacity 0.3s;
   }
   .platform-card:hover::before { opacity: 1; }
+
+  /* PLATFORM SPECIFIC COLORS */
+  .card-yt { --c: #ff2d2d; }
+  .card-tt { --c: #69c9d0; }
+  .card-sc { --c: #fffc00; }
+  .card-wa { --c: #25d366; }
+  .card-dc { --c: #5865f2; }
+  .card-gh { --c: #ffffff; }
+  .card-tg { --c: #0088cc; }
+  .card-fb { --c: #1877F2; }
 
   /* TOUCH RIPPLE EFFECT */
   .ripple {
@@ -329,12 +343,12 @@
     
     <div class="stats-bar">
       <div class="stat">
-        <div class="stat-num">6+</div>
+        <div class="stat-num">8+</div>
         <div class="stat-label">منصات</div>
       </div>
       <div class="stat">
         <div class="stat-num">∞</div>
-        <div class="stat-label">أفكار</div>
+        <div class="stat-label">مشاريع</div>
       </div>
       <div class="stat">
         <div class="stat-num">24/7</div>
@@ -407,6 +421,26 @@
       <div class="glow-dot" style="--c: #ffffff;"></div>
     </a>
 
+    <a href="https://t.me/w_n6b" target="_blank" class="platform-card card-tg" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path fill="#0088cc" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.85 5.18-4.686c.223-.195-.054-.282-.346-.11l-6.4 4.02-2.76-.86c-.6-.184-.61-.6.125-.89l10.736-4.13c.495-.21 1.055.105.867 1.037z"/>
+        </svg>
+      </div>
+      <div class="platform-label">Telegram</div>
+      <div class="glow-dot" style="--c: #0088cc;"></div>
+    </a>
+
+    <a href="https://www.facebook.com/search/top/?q=Wael%20Al-Yazidi" target="_blank" class="platform-card card-fb" onclick="addRipple(event, this)">
+      <div class="platform-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </div>
+      <div class="platform-label">Facebook</div>
+      <div class="glow-dot" style="--c: #1877F2;"></div>
+    </a>
+
   </div>
 
   <div class="bottom-brand">
@@ -477,25 +511,18 @@ document.querySelectorAll('.platform-card').forEach(card => {
 
 // INCREASED REALISM: TOUCH RIPPLE FUNCTION
 function addRipple(e, el) {
-  // Remove existing ripples
   const oldRipple = el.querySelector('.ripple');
-  if (oldRipple) {
-    oldRipple.remove();
-  }
+  if (oldRipple) oldRipple.remove();
 
   const ripple = document.createElement('div');
   ripple.className = 'ripple';
-  
   const rect = el.getBoundingClientRect();
   
-  // Get pointer position relative to the element
   let clientX, clientY;
   if (e.changedTouches) {
-    // Touch event
     clientX = e.changedTouches[0].clientX;
     clientY = e.changedTouches[0].clientY;
   } else {
-    // Mouse event
     clientX = e.clientX;
     clientY = e.clientY;
   }
@@ -503,26 +530,18 @@ function addRipple(e, el) {
   const x = clientX - rect.left;
   const y = clientY - rect.top;
   
-  // Size the ripple based on the largest dimension
   const size = Math.max(rect.width, rect.height) * 2;
   ripple.style.width = ripple.style.height = size + 'px';
-  
-  // Position the ripple center at the touch point
   ripple.style.left = x - size / 2 + 'px';
   ripple.style.top = y - size / 2 + 'px';
   
   el.appendChild(ripple);
   
-  // The ripple removes itself via CSS animation (0.6s)
-  // But we clear it just in case if the user clicks very fast
   setTimeout(() => {
-    if (ripple.parentNode === el) {
-        ripple.remove();
-    }
+    if (ripple.parentNode === el) ripple.remove();
   }, 600);
 }
 
-// Ensure cards capture both click and touch for the ripple
 document.querySelectorAll('.platform-card').forEach(card => {
     card.addEventListener('touchstart', (e) => addRipple(e, card), {passive: true});
 });
