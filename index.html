@@ -261,7 +261,6 @@
     box-shadow: 0 0 40px rgba(0,245,255,0.15), inset 0 0 20px rgba(0,0,0,0.8);
   }
 
-  /* USER IMAGE STYLES - FULLY INTEGRATED */
   .avatar-image {
     position: absolute;
     top: 0;
@@ -576,7 +575,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+  import { getDatabase, ref, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBZc6wYIoRWErFDlspRMvd08ujx8vtgxPk",
@@ -592,17 +591,28 @@
   const db = getDatabase(app);
   
   const visitsRef = ref(db, 'visits_count');
+  
+  // فحص بصمة الجهاز
+  const hasVisited = localStorage.getItem('wano_site_visited');
 
-  runTransaction(visitsRef, (currentVisits) => {
-    return (currentVisits || 0) + 1;
-  }).then((result) => {
-    if (result.committed) {
-      document.getElementById('visits-count').innerText = result.snapshot.val();
-    }
-  }).catch((error) => {
-    console.error("فشل الاتصال بقاعدة البيانات وتحديث عدد الزيارات:", error);
-    document.getElementById('visits-count').innerText = "خطأ";
-  });
+  if (!hasVisited) {
+    runTransaction(visitsRef, (currentVisits) => {
+      return (currentVisits || 0) + 1;
+    }).then((result) => {
+      if (result.committed) {
+        document.getElementById('visits-count').innerText = result.snapshot.val();
+        localStorage.setItem('wano_site_visited', 'true'); // تخزين البصمة
+      }
+    }).catch((error) => {
+      console.error("فشل الاتصال بقاعدة البيانات وتحديث عدد الزيارات:", error);
+      document.getElementById('visits-count').innerText = "خطأ";
+    });
+  } else {
+    // جلب الرقم فقط للزوار السابقين
+    onValue(visitsRef, (snapshot) => {
+      document.getElementById('visits-count').innerText = snapshot.val() || 0;
+    });
+  }
 </script>
 
 <script>
