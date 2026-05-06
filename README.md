@@ -29,7 +29,7 @@
 | **YouTube** | [@wn5b](https://youtube.com/@wn5b) |
 | **TikTok** | [@w_n6b](https://tiktok.com/@w_n6b) |
 | **Snapchat** | [@w_n6b](https://snapchat.com/add/w_n6b) |
-| **WhatsApp** | [+201145974113](https://wa.me/201145974113) |
+| **WhatsApp** | [+Not-available](https://wa.me/201145974113) |
 | **Discord** | [wn6b](https://discord.com/users/wn6b) |
 | **GitHub** | [wn6b](https://github.com/wn6b) |
 | **Telegram** | [@w_n6b](https://t.me/w_n6b) |
